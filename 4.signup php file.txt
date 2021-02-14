@@ -1,0 +1,54 @@
+<?php
+   session_start();
+   $link=mysqli_connect("localhost","guviregi_guvi","raju1234","guviregi_guvi");
+  
+   $missingfirstname = '<p>Please enter firstname</p>';
+   $missinglasttname = '<p>Please enter lastname</p>';
+   $missingemail = '<p>Please enter email</p>';
+   $missingpassword = '<p>Please enter password</p>';
+   
+if(!isset($POST["firstname"])){
+    $error .=$missingfirstname;
+}
+else{
+    $firstname = filter_var($POST["firstname"], FILTER_SANITIZE_STRING);
+}
+if(!isset($POST["lastname"])){
+    $error .=$missinglastname;
+}
+else{
+    $lastname = filter_var($POST["lastname"], FILTER_SANITIZE_STRING);
+}
+if(!isset($POST["email"])){
+    $error .=$missingemail;
+}
+else{
+    $email = filter_var($POST["email"], FILTER_SANITIZE_EMAIL);
+}
+if(!isset($POST["password"])){
+    $error .=$missingpassword;
+}
+else{
+    $password = filter_var($POST["password"], FILTER_SANITIZE_STRING);
+}
+    if($error){
+        echo $error;
+    }
+else{
+    $firstname = mysqli_real_escape_string($link,$firstname);
+    $lastname = mysqli_real_escape_string($link,$lastname);
+    $email = mysqli_real_escape_string($link,$email);
+     $password = mysqli_real_escape_string($link,$password);
+   
+   $sql = "INSERT INTO raj (firstname, lastname, email,password) VALUES ('$firstname', '$lastname', '$email','$password')";
+  
+   
+   if(mysqli_query($link, $sql)){
+     include('login.html');
+} else{
+    echo "ERROR: Could not able to execute ";
+}
+}
+
+
+?>
